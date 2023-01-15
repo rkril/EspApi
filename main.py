@@ -6,7 +6,7 @@ from starlette.responses import RedirectResponse
 import schemas
 import crud
 
-#intialize web app / pi
+# intialize web app / pi
 app = FastAPI()
 
 # Allows cors for everyone **Ignore**
@@ -18,14 +18,16 @@ app.add_middleware(
     allow_credentials=True,
 )
 
-# Redirects base url to docs goto /redoc for fancy documentation 
+
+# Redirects base url to docs goto /redoc for fancy documentation
 @app.get("/")
 def main():
     return RedirectResponse(url="/docs")
 
+
 @app.get('/health-check')
 def health_check():
-  return schemas.HealthCheck()
+    return schemas.HealthCheck()
 
 
 # POST request for Name Write
@@ -33,14 +35,16 @@ def health_check():
 def post_name(dataIn: schemas.nameInsert):
     return crud.insert(dataIn)
 
+
 # post request for Name Read
 @app.post("/api/read", response_model=schemas.nameOut)
 def read_name(dataIn: schemas.nameRead):
     return crud.get(dataIn)
 
-# GET request for Name Read name is passed in url rather than json 
+
+# GET request for Name Read name is passed in url rather than json
 @app.get("/api/read/{name}", response_model=schemas.nameOut)
-def get_name(name:str):
+def get_name(name: str):
     return crud.get_direct(name)
 
 
